@@ -1,6 +1,7 @@
 import sys
+
 import pygame
-from pygame.locals import QUIT, KEYDOWN, KEYUP, K_w, K_s
+from pygame.locals import KEYDOWN, KEYUP, QUIT, K_s, K_w
 
 # -----------------------------
 # Konfigurasi Umum
@@ -105,9 +106,13 @@ class Ball:
             self.speed_x *= -1
 
             # Tambahkan variasi sudut berdasarkan titik kontak
-            offset = (self.rect.centery - paddle.rect.centery) / (paddle.rect.height / 2)
+            offset = (self.rect.centery - paddle.rect.centery) / (
+                paddle.rect.height / 2
+            )
             max_angle_speed = 7.5
-            self.speed_y = max(-max_angle_speed, min(max_angle_speed, offset * max_angle_speed))
+            self.speed_y = max(
+                -max_angle_speed, min(max_angle_speed, offset * max_angle_speed)
+            )
 
             # Sedikit percepatan tiap mengenai paddle
             if self.speed_x > 0:
@@ -135,8 +140,20 @@ def main():
     paddle_width, paddle_height = 12, 100
     margin = 24
 
-    player = Paddle(margin, SCREEN_HEIGHT // 2 - paddle_height // 2, paddle_width, paddle_height, speed=9)
-    ai = Paddle(SCREEN_WIDTH - margin - paddle_width, SCREEN_HEIGHT // 2 - paddle_height // 2, paddle_width, paddle_height, speed=8)
+    player = Paddle(
+        margin,
+        SCREEN_HEIGHT // 2 - paddle_height // 2,
+        paddle_width,
+        paddle_height,
+        speed=9,
+    )
+    ai = Paddle(
+        SCREEN_WIDTH - margin - paddle_width,
+        SCREEN_HEIGHT // 2 - paddle_height // 2,
+        paddle_width,
+        paddle_height,
+        speed=8,
+    )
 
     ball = Ball(SCREEN_WIDTH // 2 - 7, SCREEN_HEIGHT // 2 - 7, size=14, speed=6)
 
@@ -221,13 +238,24 @@ def main():
         screen.blit(score_text, score_rect)
 
         # Bantuan kontrol
-        help_text = SMALL_FONT.render("Kontrol: W/S untuk naik/turun, ESC atau tutup jendela untuk keluar", True, (180, 180, 180))
-        screen.blit(help_text, (SCREEN_WIDTH // 2 - help_text.get_width() // 2, SCREEN_HEIGHT - 32))
+        help_text = SMALL_FONT.render(
+            "Kontrol: W/S untuk naik/turun, ESC atau tutup jendela untuk keluar",
+            True,
+            (180, 180, 180),
+        )
+        screen.blit(
+            help_text,
+            (SCREEN_WIDTH // 2 - help_text.get_width() // 2, SCREEN_HEIGHT - 32),
+        )
 
         # Info menang
         if player_score >= WIN_SCORE or ai_score >= WIN_SCORE:
             winner = "Pemain" if player_score > ai_score else "AI"
-            win_text = FONT.render(f"{winner} menang! Tekan R untuk restart atau tutup untuk keluar.", True, FG_COLOR)
+            win_text = FONT.render(
+                f"{winner} menang! Tekan R untuk restart atau tutup untuk keluar.",
+                True,
+                FG_COLOR,
+            )
             win_rect = win_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
             screen.blit(win_text, win_rect)
 
